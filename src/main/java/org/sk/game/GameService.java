@@ -14,13 +14,14 @@ public class GameService {
     // Includes logging
     public boolean[][] solveLightsOutProblem(boolean[][] grid) {
 
+        LOG.info("----------------------------------");
         LOG.info("STARTED SOLVING LIGHTS OUT PROBLEM");
         long startTime = System.nanoTime();
         boolean[][] result = solveLightsOut(grid);
         long endTime = System.nanoTime();
         LOG.info("FINISHED SOLVING LIGHTS OUT PROBLEM");
         LOG.info("Time taken to solve Lights Out problem: "
-                + (endTime - startTime) + " ns" + " = " + (endTime - startTime) / 1000000 + " ms");
+                + (endTime - startTime) + " ns" + " = " + (float) (endTime - startTime) / 1000000 + " ms");
         return result;
     }
 
@@ -142,7 +143,7 @@ public class GameService {
 
             if (pivotCol == -1) {
                 if (puzzleVector[row]) {
-                    Log.info("Puzzle has no solution");
+                    Log.info("Problem has no solution");
                     return null;
                 }
             } else {
