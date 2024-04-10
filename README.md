@@ -1,6 +1,6 @@
 # Lights Out Game REST API
 
-This is a simple REST API for the Lights Out Game, build using [Quarkus](https://quarkus.io/).
+This is a simple REST API for the Lights Out Game, built using [Quarkus](https://quarkus.io/).
 This document goes over some of the design decisions and implementation details of the application.
 
 
@@ -15,7 +15,7 @@ The API follows the assignment instructions and is documented using Swagger, whi
 `http://localhost:8080/q/swagger-ui/`.
 
 ## Architecture
-The application uses a simple layered architecture, with the following layers:
+The application uses a layered architecture, with the following layers:
 - **Resource**: The REST API layer, which handles incoming HTTP requests. The layer is split into:
     - **ProblemResource**: Handles requests related to getting and storing problems.
     - **SolutionResource**: Handles requests related to getting solutions.
