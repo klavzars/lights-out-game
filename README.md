@@ -41,7 +41,7 @@ consists of the tables specified in the assignment instructions:
 - Solution
 - SolutionStep
 
-**Note:** my initial idea didn't depend on the *SolutionStep* data, and I have already
+**Note:** My initial idea didn't depend on the *SolutionStep* data, and I have already
 developed a fair bit of the application before realizing that the instructions said I need to store the steps of the solution.
 This is why the *SolutionStep* table is not used much in the application, but it is still implemented
 for the sake of completeness.
