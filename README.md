@@ -1,61 +1,78 @@
-# lights-out-game
+# Lights Out Game REST API
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+This is a simple REST API for the Lights Out Game, build using [Quarkus](https://quarkus.io/).
+This document goes over some of the design decisions and implementation details of the application.
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
 
-## Running the application in dev mode
-
-You can run your application in dev mode that enables live coding using:
+## Running the application
+To run the application in dev mode, use:
 ```shell script
 ./mvnw compile quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+## API usage
+The API follows the assignment instructions and is documented using Swagger, which (in dev mode) can be accessed at
+`http://localhost:8080/q/swagger-ui/`.
 
-## Packaging and running the application
+## Architecture
+The application uses a simple layered architecture, with the following layers:
+- **Resource**: The REST API layer, which handles incoming HTTP requests. The layer is split into:
+    - **ProblemResource**: Handles requests related to getting and storing problems.
+    - **SolutionResource**: Handles requests related to getting solutions.
+- **Service**: The business logic layer. The layer is split into:
+    - **ProblemService**: Handles the business logic related to problems.
+    - **SolutionService**: Handles the business logic related to solutions.
+    - **GameService**: Handles the business logic related to solving the Lights Out Game.
+- **Repository**: The layer tasked with storing/retrieving data (the DB is simulated by an in-memory implementation). The layer is split into:
+    - **ProblemRepository**: Handles the data storage and retrieval related to problems.
+    - **SolutionRepository**: Handles the data storage and retrieval related to solutions.
+- **Model**: The data model layer, which defines the data structures used in the application.
+  - **Problem**: Represents a problem in the Lights Out Game.
+  - **Solution**: Represents a solution to a problem in the Lights Out Game.
+  - **SolutionStep**: Represents a step in a solution to a problem in the Lights Out Game.
 
-The application can be packaged using:
-```shell script
-./mvnw package
-```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+### Database implementation
+For the purposes of this assignment, I decided to simulate a database by creating it in-memory.
+The table declarations (implemented as *ArrayLists*) can be found in the *Repository* files. The database 
+consists of the tables specified in the assignment instructions:
+- Problem
+- Solution
+- SolutionStep
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+**Note:** my initial idea didn't depend on the *SolutionStep* data, and I have already
+developed a fair bit of the application before realizing that the instructions said I need to store the steps of the solution.
+This is why the *SolutionStep* table is not used much in the application, but it is still implemented
+for the sake of completeness.
 
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
-```
+### Error handling
+The **exception** directory contains utilities for handling exceptions in the application.
+The application handles various exceptions, such as:
+- **NoProblemWithSpecifiedIdException**: Thrown when a problem with the specified ID does not exist.
+- **ProblemAlreadyExistsException**: Thrown when a problem with the same grid the user is trying to create already exists.
+- **ConstraintViolationException**: Used for validating the input Lights Out problem grid.
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+A **GenericThrowableMapper** is also implemented, which attempts to catch all other exceptions and 
+returns a generic error message without leaking any sensitive information.
 
-## Creating a native executable
+## Lights Out Algorithm Implementation
 
-You can create a native executable using: 
-```shell script
-./mvnw package -Dnative
-```
+The algorithm used to solve the Lights Out Game is based on Gaussian Elimination.
+The general idea (also described [here](https://mathworld.wolfram.com/LightsOutPuzzle.html))
+is to represent the Lights Out Game as a system of linear equations and use the appropriate
+algorithms (specifically, Gaussian Elimination and Back-Substitution) to solve the system.
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
+The algorithm's execution time and the number of steps needed to solve the game are both 
+being logged in the console.
 
-You can then execute your native executable with: `./target/lights-out-game-1.0.0-SNAPSHOT-runner`
+The algorithm is implemented in the **GameService** class.
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
+## Comments
+Since I'm fairly new to Quarkus and Java EE, I realize that my implementation is far from perfect.
+I still tried to follow best practices and keep the code clean and maintainable as much as
+possible, but I'm sure there are many things that could be improved (things that come to mind are 
+better error handling, implementing an actual database, and better input validation).
 
-## Related Guides
+I'm looking forward to your feedback and want to thank you for the opportunity.
 
-- REST ([guide](https://quarkus.io/guides/rest)): A Jakarta REST implementation utilizing build time processing and Vert.x. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it.
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for RESTEasy Reactive. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
 
-## Provided Code
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+For any additional information, feel free to contact me at [klavzar.simon@gmail.com](mailto:klavzar.simon@gmail.com).
