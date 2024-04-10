@@ -3,6 +3,8 @@
 This is a simple REST API for the Lights Out Game, built using [Quarkus](https://quarkus.io/).
 This document goes over some of the design decisions and implementation details of the application.
 
+The frontend for this application can be found [here](https://github.com/klavzars/lights-out-frontend).
+
 
 ## Running the application
 To run the application in dev mode, use:
