@@ -47,7 +47,7 @@ This is why the *SolutionStep* table is not used much in the application, but it
 for the sake of completeness.
 
 ### Error handling
-The **exception** directory contains utilities for handling exceptions in the application.
+The **exception** directory contains utilities for handling exceptions.
 The application handles various exceptions, such as:
 - **NoProblemWithSpecifiedIdException**: Thrown when a problem with the specified ID does not exist.
 - **ProblemAlreadyExistsException**: Thrown when a problem with the same grid the user is trying to create already exists.
